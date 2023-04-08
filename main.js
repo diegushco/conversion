@@ -125,3 +125,19 @@ inputElement.addEventListener("input", function (event) {
 btnbstocop.click();
 getCurrentTasa();
 resultcontainer.style.display = "none";
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker
+        .register("service-worker.js")
+        .then(function (registration) {
+          console.log(
+            "Service Worker registrado con éxito con alcance:",
+            registration.scope
+          );
+        })
+        .catch(function (error) {
+          console.error("Error al registrar el Service Worker:", error);
+        });
+    });
+  }
