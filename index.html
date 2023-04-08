@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COP a Bs.</title>
+    <link rel="stylesheet" href="./style.css">
+    <script defer src="./main.js"></script>
+</head>
+<body>
+    <div class="container">
+        <button id="bstocop" class="button">Bolivares a Pesos</button>
+        <button id="coptobs" class="button">Pesos a Bolivares</button>
+    </div>
+    <div class="textconversion">
+        <h3>Estas convirtiendo: <h2><span id="conversion"></span></h2></h3>
+        
+    </div>
+    <div class="textconversion">
+       <div class="divplaceholder">
+        <input type="number" id="value" class="inputvalue" style="outline: 0; border: 0;">
+        <span id="placeholder">.domain.com</span>
+      </div>
+      <button id="btnborrar" class="inputvalue">Borrar</button>
+    </div>
+    <div id="resultcontainer" class="textconversion">
+        <p class="presult">Son: <strong><span id="result"></span></strong> <span id="current"></span></p>
+    </div>
+    <div id="resultcontainer" class="textconversion">
+        <p >Tasa de referencia: <a title="Cambiar tasa temporalmente" href="javascript:change()"><strong><span id="referencia"></span></strong></a></p>
+    </div>
+    
+</body>
+</html>
+

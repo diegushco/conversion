@@ -1,0 +1,102 @@
+/* Estilos para centrar los botones */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.button {
+  padding: 10px 20px;
+  background-color: green;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  margin: 10px 10px;
+  width: 60%;
+  font-size: 4rem;
+  border: none;
+}
+
+.textconversion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputvalue,
+.inputvalue + button {
+  font-size: 3rem;
+}
+
+.presult {
+  font-size: 3rem;
+  margin: 10px 0px 0px 0px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+#placeholder {
+  font-size: 1.5rem;
+  color: gray;
+  padding-right: 0.5rem;
+}
+
+.divplaceholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid gray;
+  padding: 2px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .button {
+    width: 90%;
+    font-size: 2rem;
+  }
+  .inputvalue,
+  .inputvalue + button {
+    font-size: 1.5rem;
+  }
+  .inputvalue{
+    width: 60%;
+  }
+  .presult{
+    font-size: 2rem;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .button {
+    width: 90%;
+    font-size: 2.5rem;
+  }
+  .inputvalue,
+  .inputvalue + button {
+    font-size: 2.5rem;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+}
