@@ -22,9 +22,29 @@
     <script defer src="./main.js"></script>
   </head>
   <body>
-    <div class="container">
-      <button id="bstocop" class="button">Bolivares a Pesos</button>
-      <button id="coptobs" class="button">Pesos a Bolivares</button>
+    <div class="div-monedas">
+      
+      <div class="container" style="background-color: #fdfda4;">
+        <h2>
+          PESOS
+        </h2>
+        <button id="bstocop" class="button">Bolivares a Pesos</button>
+        <button id="coptobs" style="background-color: gray;" class="button">Pesos a Bolivares</button>
+      </div>
+      <div class="container" style="background-color: #8fbfa3;">
+        <h2>
+          DOLARES
+        </h2>
+        <button id="bstodolar" class="button">Bolivares a Dolares</button>
+        <button id="dolartobs" style="background-color: gray;" class="button">Dolares a Bolivares</button>
+      </div>
+      <div class="container" style="background-color: #3553f8;">
+        <h2>
+          EUROS
+        </h2>
+        <button id="bstoeur" class="button">Bolivares a Euros</button>
+        <button id="eurtobs" style="background-color: gray;" class="button">Euros a Bolivares</button>
+      </div>
     </div>
     <div class="textconversion">
       <h3>
@@ -58,5 +78,14 @@
         ></a>
       </p>
     </div>
+    <div style="display: flex; justify-content: center; font-size: 2rem;">
+      <div >
+        <h3>TASAS DE CAMBIO con BOLIVARES:</h3>
+        <h4>Dolar: <span id="referenciausd"></span></h4>
+        <h4>EURO: <span id="referenciaeur"></span></h4>
+        <h4>PESOS: <span id="referenciacop"></span></h4>
+      </div>
+    </div>
+   
   </body>
 </html>
