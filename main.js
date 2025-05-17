@@ -1,5 +1,9 @@
 const btnbstocop = document.getElementById("bstocop");
 const btncoptobs = document.getElementById("coptobs");
+const btnbstodolar = document.getElementById("bstodolar");
+const btndolartobs = document.getElementById("dolartobs");
+const btnbstoeur = document.getElementById("bstoeur");
+const btneurtobs = document.getElementById("eurtobs");
 const conversion = document.getElementById("conversion");
 const inputElement = document.getElementById("value");
 const btnborrar = document.getElementById("btnborrar");
@@ -7,14 +11,24 @@ const current = document.getElementById("current");
 const resultcontainer = document.getElementById("resultcontainer");
 const result = document.getElementById("result");
 const referencia = document.getElementById("referencia");
+const referenciaCOP = document.getElementById("referenciacop");
+const referenciaUSD = document.getElementById("referenciausd");
+const referenciaEUR = document.getElementById("referenciaeur");
 const placeholder = document.getElementById("placeholder");
 
 
 const BOLIVAR = "bolivar";
 const PESO = "peso";
+const DOLARBS = "dolarbs";
+const DOLAR = "dolar";
+const EUROBS = "eurobs";
+const EURO = "euro";
 
 let currentConversion = BOLIVAR;
 let currentTasa = -1;
+let currentTasaCOP = -1;
+let currentTasaEUR = -1;
+let currentTasaUSD = -1;
 
 function addPointSeparator(numero) {
   // Convierte el número a una cadena de texto
@@ -34,27 +48,92 @@ function addPointSeparator(numero) {
   return enteros + (decimales.length > 0 ? "." + decimales : "");
 }
 
-function getCurrentTasa() {
-  fetch("https://run.mocky.io/v3/e0093aa1-4e1b-4243-a063-94420bb641e8", {
+function getCurrentTasaCOP() {
+
+  const today = new Date();
+    today.setDate(today.getDate() - 1);
+
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+    const day = String(today.getDate()).padStart(2, '0');
+
+    const fecha = `${year}-${month}-${day}`;
+
+
+  fetch("https://www.datos.gov.co/resource/32sa-8pi3.json?vigenciadesde="+fecha, {
     method: "GET",
     headers: { "Content-type": "application/json;charset=UTF-8" },
   })
     .then((response) => response.json())
     .then((json) => {
-        currentTasa = parseFloat(json.tasa);
+        currentTasa = parseFloat(json[0].valor);
+        const calculo = Number((currentTasa / currentTasaUSD)-10);
+
+      
+        currentTasa = (calculo).toFixed(2);
+        currentTasaCOP = parseFloat((((calculo)).toFixed(2)));
+
         referencia.textContent = currentTasa;
+        referenciaCOP.textContent = JSON.stringify(currentTasa);
         convert();
     });
 }
+
+function getCurrentTasaEUR() {
+  fetch("https://pydolarve.org/api/v1/dollar?page=bcv&monitor=eur", {
+    method: "GET",
+    headers: { "Content-type": "application/json;charset=UTF-8" },
+  })
+    .then((response) => response.json())
+    .then((json) => {
+        // Guardar el price en currentTasa
+        currentTasaEUR = parseFloat(json.price);
+        referenciaEUR.textContent = JSON.stringify(currentTasaEUR);
+        convert();
+    })
+    .catch((error) => {
+        console.error("Error al obtener la tasa:", error);
+    });
+}
+
+function getCurrentTasaUSD() {
+  fetch("https://pydolarve.org/api/v1/dollar?page=bcv&monitor=usd", {
+    method: "GET",
+    headers: { "Content-type": "application/json;charset=UTF-8" },
+  })
+    .then((response) => response.json())
+    .then((json) => {
+        // Guardar el price en currentTasa
+        currentTasaUSD = parseFloat(json.price);
+        referenciaUSD.textContent = JSON.stringify(currentTasaUSD);
+        getCurrentTasaCOP();
+        convert();
+    })
+    .catch((error) => {
+        console.error("Error al obtener la tasa:", error);
+    });
+}
+
+
 
 function convert() {
   let valueFinal = 0;
   const value = inputElement.value;
   const valueFloat = parseFloat(value);
+  const valorCurrent = Number(currentTasa);
+
   if (currentConversion === BOLIVAR) {
-    valueFinal = valueFloat * currentTasa;
+    valueFinal = valueFloat * valorCurrent;
   } else if (currentConversion === PESO) {
-    valueFinal = valueFloat / currentTasa;
+    valueFinal = valueFloat / valorCurrent;
+  }else if (currentConversion === DOLAR) {
+    valueFinal = valueFloat * valorCurrent;
+  }else if (currentConversion === DOLARBS) {
+    valueFinal = valueFloat / valorCurrent;
+  }else if (currentConversion === EUROBS) {
+    valueFinal = valueFloat / valorCurrent;
+  }else if (currentConversion === EURO) {
+    valueFinal = valueFloat * valorCurrent;
   }
   const numsep = addPointSeparator(Math.round(valueFinal * 100) / 100);
   result.textContent = numsep;
@@ -73,9 +152,13 @@ btnbstocop.addEventListener("click", () => {
 
   // Verificar si el color actual es azul
   if (currentColor !== "green") {
-    // Cambiar el color a rojo si es azul
+    // Cambiar el color a rojo si es azul btnbstodolar btndolartobs btnbstoeur btneurtobs
     btnbstocop.style.backgroundColor = "green";
     btncoptobs.style.backgroundColor = "gray";
+    btnbstodolar.style.backgroundColor = "gray";
+    btndolartobs.style.backgroundColor = "gray";
+    btnbstoeur.style.backgroundColor = "gray";
+    btneurtobs.style.backgroundColor = "gray";
     conversion.innerText = btnbstocop.textContent;
     currentConversion = BOLIVAR;
     current.textContent = "Pesos";
@@ -83,6 +166,9 @@ btnbstocop.addEventListener("click", () => {
     resultcontainer.style.display = "none";
     inputElement.value = "";
     inputElement.focus();
+    referencia.textContent = referenciaCOP.textContent;
+
+    currentTasa = currentTasaCOP;
   }
 });
 
@@ -95,6 +181,10 @@ btncoptobs.addEventListener("click", () => {
     // Cambiar el color a rojo si es azul
     btncoptobs.style.backgroundColor = "green";
     btnbstocop.style.backgroundColor = "gray";
+    btnbstodolar.style.backgroundColor = "gray";
+    btndolartobs.style.backgroundColor = "gray";
+    btnbstoeur.style.backgroundColor = "gray";
+    btneurtobs.style.backgroundColor = "gray";
     conversion.innerText = btncoptobs.textContent;
     currentConversion = PESO;
     current.textContent = placeholder.textContent = "Bolivares";
@@ -103,6 +193,108 @@ btncoptobs.addEventListener("click", () => {
     resultcontainer.style.display = "none";
     inputElement.value = "";
     inputElement.focus();
+    referencia.textContent = referenciaCOP.textContent;
+    currentTasa = currentTasaCOP;
+  }
+});
+
+btnbstodolar.addEventListener("click", () => {
+  // Obtener el estilo actual del botón
+  const currentColor = btnbstodolar.style.backgroundColor;
+
+  // Verificar si el color actual es azul
+  if (currentColor !== "green") {
+    // Cambiar el color a rojo si es azul btnbstodolar btndolartobs btnbstoeur btneurtobs
+    btnbstodolar.style.backgroundColor = "green";
+    btncoptobs.style.backgroundColor = "gray";
+    btnbstocop.style.backgroundColor = "gray";
+    btndolartobs.style.backgroundColor = "gray";
+    btnbstoeur.style.backgroundColor = "gray";
+    btneurtobs.style.backgroundColor = "gray";
+    conversion.innerText = btnbstodolar.textContent;
+    currentConversion = DOLARBS;
+    current.textContent = "Dolares";
+    placeholder.textContent = "Bolivares";
+    resultcontainer.style.display = "none";
+    inputElement.value = "";
+    inputElement.focus();
+    referencia.textContent = referenciaUSD.textContent;
+    currentTasa = currentTasaUSD;
+  }
+});
+
+btndolartobs.addEventListener("click", () => {
+  // Obtener el estilo actual del botón
+  const currentColor = btndolartobs.style.backgroundColor;
+
+  // Verificar si el color actual es azul
+  if (currentColor !== "green") {
+    // Cambiar el color a rojo si es azul btnbstodolar btndolartobs btnbstoeur btneurtobs
+    btndolartobs.style.backgroundColor = "green";
+    btncoptobs.style.backgroundColor = "gray";
+    btnbstodolar.style.backgroundColor = "gray";
+    btnbstocop.style.backgroundColor = "gray";
+    btnbstoeur.style.backgroundColor = "gray";
+    btneurtobs.style.backgroundColor = "gray";
+    conversion.innerText = btndolartobs.textContent;
+    currentConversion = DOLAR;
+    current.textContent = "Bolivares";
+    placeholder.textContent = "Dolares";
+    resultcontainer.style.display = "none";
+    inputElement.value = "";
+    inputElement.focus();
+    referencia.textContent = referenciaUSD.textContent;
+    currentTasa = currentTasaUSD;
+  }
+});
+
+btnbstoeur.addEventListener("click", () => {
+  // Obtener el estilo actual del botón
+  const currentColor = btnbstoeur.style.backgroundColor;
+
+  // Verificar si el color actual es azul
+  if (currentColor !== "green") {
+    // Cambiar el color a rojo si es azul btnbstodolar btndolartobs btnbstoeur btneurtobs
+    btnbstoeur.style.backgroundColor = "green";
+    btncoptobs.style.backgroundColor = "gray";
+    btnbstodolar.style.backgroundColor = "gray";
+    btndolartobs.style.backgroundColor = "gray";
+    btnbstocop.style.backgroundColor = "gray";
+    btneurtobs.style.backgroundColor = "gray";
+    conversion.innerText = btnbstoeur.textContent;
+    currentConversion = EUROBS;
+    current.textContent = "Euros";
+    placeholder.textContent = "Bolivares";
+    resultcontainer.style.display = "none";
+    inputElement.value = "";
+    inputElement.focus();
+    referencia.textContent = referenciaEUR.textContent;
+    currentTasa = currentTasaEUR;
+  }
+});
+
+btneurtobs.addEventListener("click", () => {
+  // Obtener el estilo actual del botón
+  const currentColor = btneurtobs.style.backgroundColor;
+  
+  // Verificar si el color actual es azul
+  if (currentColor !== "green") {
+    // Cambiar el color a rojo si es azul btnbstodolar btndolartobs btnbstoeur btneurtobs
+    btneurtobs.style.backgroundColor = "green";
+    btncoptobs.style.backgroundColor = "gray";
+    btnbstodolar.style.backgroundColor = "gray";
+    btndolartobs.style.backgroundColor = "gray";
+    btnbstoeur.style.backgroundColor = "gray";
+    btnbstocop.style.backgroundColor = "gray";
+    conversion.innerText = btneurtobs.textContent;
+    currentConversion = EURO;
+    current.textContent = "Bolivares";
+    placeholder.textContent = "Euros";
+    resultcontainer.style.display = "none";
+    inputElement.value = "";
+    inputElement.focus();
+    referencia.textContent = referenciaEUR.textContent;
+    currentTasa = currentTasaEUR;
   }
 });
 
@@ -123,7 +315,9 @@ inputElement.addEventListener("input", function (event) {
 });
 
 btnbstocop.click();
-getCurrentTasa();
+
+getCurrentTasaEUR();
+getCurrentTasaUSD();
 resultcontainer.style.display = "none";
 
 if ("serviceWorker" in navigator) {
