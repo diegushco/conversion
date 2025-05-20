@@ -60,13 +60,14 @@ function getCurrentTasaCOP() {
     const fecha = `${year}-${month}-${day}`;
 
 
-  fetch("https://www.datos.gov.co/resource/32sa-8pi3.json?vigenciadesde="+fecha, {
+  fetch("https://v6.exchangerate-api.com/v6/403140ddd8064813a803593f/latest/usd", {
     method: "GET",
+
     headers: { "Content-type": "application/json;charset=UTF-8" },
   })
     .then((response) => response.json())
     .then((json) => {
-        currentTasa = parseFloat(json[0].valor);
+        currentTasa = parseFloat(json.conversion_rates.COP);
         const calculo = Number((currentTasa / currentTasaUSD)-10);
 
       
