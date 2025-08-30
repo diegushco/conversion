@@ -98,7 +98,7 @@ function getCurrentTasaEUR() {
 }
 
 function getCurrentTasaUSD() {
-  fetch("https://pydolarve.org/api/v1/dollar?page=bcv&monitor=usd", {
+  fetch("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json", {
     method: "GET",
     headers: { "Content-type": "application/json;charset=UTF-8" },
   })
