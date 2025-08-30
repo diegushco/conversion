@@ -68,7 +68,7 @@ function getCurrentTasaCOP() {
     .then((response) => response.json())
     .then((json) => {
         currentTasa = parseFloat(json.conversion_rates.COP);
-        const calculo = Number((currentTasa / currentTasaUSD));
+        const calculo = Number((currentTasa / currentTasaUSD)-9);
 
       
         currentTasa = (calculo).toFixed(2);
