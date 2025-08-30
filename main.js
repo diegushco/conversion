@@ -71,8 +71,9 @@ function getCurrentTasaCOP() {
         const calculo = Number((currentTasa / currentTasaUSD)-9);
 
       
-        currentTasa = (calculo).toFixed(2);
+        currentTasa = Math.floor((calculo).toFixed(2));
         currentTasaCOP = parseFloat((((calculo)).toFixed(2)));
+        currentTasaCOP = Math.floor(currentTasaCOP);
 
         referencia.textContent = currentTasa;
         referenciaCOP.textContent = JSON.stringify(currentTasa);
@@ -89,6 +90,7 @@ function getCurrentTasaEUR() {
     .then((json) => {
         // Guardar el price en currentTasa
         currentTasaEUR = parseFloat(json.conversion_rates.VES);
+        currentTasaEUR = Math.floor(currentTasaEUR);
         referenciaEUR.textContent = JSON.stringify(currentTasaEUR);
         convert();
     })
@@ -106,6 +108,7 @@ function getCurrentTasaUSD() {
     .then((json) => {
         // Guardar el price en currentTasa
       currentTasaUSD = parseFloat(json.conversion_rates.VES);
+      currentTasaUSD = Math.floor(currentTasaUSD);
         referenciaUSD.textContent = JSON.stringify(currentTasaUSD);
         getCurrentTasaCOP();
         convert();
