@@ -68,7 +68,7 @@ function getCurrentTasaCOP() {
     .then((response) => response.json())
     .then((json) => {
         currentTasa = parseFloat(json.conversion_rates.COP);
-        const calculo = Number((currentTasa / currentTasaUSD)-13);
+        const calculo = Number((currentTasa / currentTasaUSD));
 
       
         currentTasa = (calculo).toFixed(2);
@@ -81,14 +81,14 @@ function getCurrentTasaCOP() {
 }
 
 function getCurrentTasaEUR() {
-  fetch("https://pydolarve.org/api/v1/dollar?page=bcv&monitor=eur", {
+  fetch("https://v6.exchangerate-api.com/v6/403140ddd8064813a803593f/latest/eur", {
     method: "GET",
     headers: { "Content-type": "application/json;charset=UTF-8" },
   })
     .then((response) => response.json())
     .then((json) => {
         // Guardar el price en currentTasa
-        currentTasaEUR = parseFloat(json.price);
+        currentTasaEUR = parseFloat(json.conversion_rates.VES);
         referenciaEUR.textContent = JSON.stringify(currentTasaEUR);
         convert();
     })
@@ -98,14 +98,14 @@ function getCurrentTasaEUR() {
 }
 
 function getCurrentTasaUSD() {
-  fetch("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json", {
+  fetch("https://v6.exchangerate-api.com/v6/403140ddd8064813a803593f/latest/usd", {
     method: "GET",
     headers: { "Content-type": "application/json;charset=UTF-8" },
   })
     .then((response) => response.json())
     .then((json) => {
         // Guardar el price en currentTasa
-        currentTasaUSD = parseFloat(json.price);
+      currentTasaUSD = parseFloat(json.conversion_rates.VES);
         referenciaUSD.textContent = JSON.stringify(currentTasaUSD);
         getCurrentTasaCOP();
         convert();
